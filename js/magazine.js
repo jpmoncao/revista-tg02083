@@ -1,9 +1,7 @@
 /*
  * Magazine sample
 */
-
 function addPage(page, book) {
-
 	var id, pages = book.turn('pages');
 
 	// Create a new element for this page
@@ -11,7 +9,6 @@ function addPage(page, book) {
 
 	// Add the page to the flipbook
 	if (book.turn('addPage', element, page)) {
-
 		// Add the initial HTML
 		// It will contain a loader indicator and a gradient
 		element.html('<div class="gradient"></div><div class="loader"></div>');
@@ -19,13 +16,19 @@ function addPage(page, book) {
 		// Load the page
 		loadPage(page, element);
 	}
+}
 
+function addThumbnail(i) {
+	var thumbnails = document.querySelector('.thumbnails>div>ul')
+
+	if (i == 1 || i == $('.magazine').turn('pages'))
+		thumbnails.innerHTML += `<li class="i"><img src="pages/${i}.png" width="76" height="100" class="page-${i}"><span>${i}</span></li>`;
+	else if (i % 2 == 0)
+		thumbnails.innerHTML += `<li class="d"><img src="pages/${i}.png" width="76" height="100" class="page-${i}"><img src="pages/${i + 1}.png" width="76" height="100" class="page-${i + 1}"></li>`;
 }
 
 function loadPage(page, pageElement) {
-
 	// Create an image element
-
 	var img = $('<img />');
 
 	img.on('mousedown', function (e) {
@@ -33,31 +36,24 @@ function loadPage(page, pageElement) {
 	});
 
 	img.on('load', function () {
-
 		// Set the size
 		$(this).css({ width: '100%', height: '100%' });
 
 		// Add the image to the page after loaded
-
 		$(this).appendTo(pageElement);
 
 		// Remove the loader indicator
-
 		pageElement.find('.loader').remove();
 	});
 
 	// Load the page
-
 	img.attr('src', 'pages/' + page + '.png');
 
-	loadRegions(page, pageElement);
-
+	//loadRegions(page, pageElement);
 }
 
 // Zoom in / Zoom out
-
 function zoomTo(event) {
-
 	setTimeout(function () {
 		if ($('.magazine-viewport').data().regionClicked) {
 			$('.magazine-viewport').data().regionClicked = false;
@@ -69,15 +65,10 @@ function zoomTo(event) {
 			}
 		}
 	}, 1);
-
 }
 
-
-
 // Load regions
-
 function loadRegions(page, element) {
-
 	$.getJSON('pages/' + page + '-regions.json').
 		done(function (data) {
 
@@ -88,9 +79,7 @@ function loadRegions(page, element) {
 }
 
 // Add region
-
 function addRegion(region, pageElement) {
-
 	var reg = $('<div />', { 'class': 'region  ' + region['class'] }),
 		options = $('.magazine').turn('options'),
 		pageWidth = options.width / 2,
@@ -103,18 +92,14 @@ function addRegion(region, pageElement) {
 		height: Math.round(region.height / pageHeight * 100) + '%'
 	}).attr('region-data', $.param(region.data || ''));
 
-
 	reg.appendTo(pageElement);
 }
 
 // Process click on a region
-
 function regionClick(event) {
-
 	var region = $(event.target);
 
 	if (region.hasClass('region')) {
-
 		$('.magazine-viewport').data().regionClicked = true;
 
 		setTimeout(function () {
@@ -124,25 +109,18 @@ function regionClick(event) {
 		var regionType = $.trim(region.attr('class').replace('region', ''));
 
 		return processRegion(region, regionType);
-
 	}
-
 }
 
 // Process the data of every region
-
 function processRegion(region, regionType) {
-
 	data = decodeParams(region.attr('region-data'));
 
 	switch (regionType) {
 		case 'link':
-
 			window.open(data.url);
-
 			break;
 		case 'zoom':
-
 			var regionOffset = region.offset(),
 				viewportOffset = $('.magazine-viewport').offset(),
 				pos = {
@@ -154,45 +132,35 @@ function processRegion(region, regionType) {
 
 			break;
 		case 'to-page':
-
 			$('.magazine').turn('page', data.page);
-
 			break;
 	}
-
 }
 
 // Load large page
-
 function loadLargePage(page, pageElement) {
-
 	var img = $('<img />');
 
 	img.on('load', function () {
-
 		var prevImg = pageElement.find('img');
 		$(this).css({ width: '100%', height: '100%' });
 		$(this).appendTo(pageElement);
 		prevImg.remove();
-
 	});
 
 	// Loadnew page
-
-	img.attr('src', 'pages/' + page + '-large.png');
+	img.attr('src', 'pages/' + page + '.png');
 }
 
 // Load small page
-
 function loadSmallPage(page, pageElement) {
-
 	var img = pageElement.find('img');
 
 	img.css({ width: '100%', height: '100%' });
 
 	img.off('load');
-	// Loadnew page
 
+	// Loadnew page
 	img.attr('src', 'pages/' + page + '.png');
 }
 
@@ -209,9 +177,7 @@ function disableControls(page) {
 }
 
 // Set the width and height for the viewport
-
 function resizeViewport() {
-
 	var width = $(window).width(),
 		height = $(window).height(),
 		options = $('.magazine').turn('options');
@@ -273,13 +239,11 @@ function resizeViewport() {
 
 
 // Number of views in a flipbook
-
 function numberOfViews(book) {
 	return book.turn('pages') / 2 + 1;
 }
 
 // Current view in a flipbook
-
 function getViewNumber(book, page) {
 	return parseInt((page || book.turn('page')) / 2 + 1, 10);
 }
@@ -289,7 +253,6 @@ function moveBar(yes) {
 }
 
 function setPreview(view) {
-
 	var previewWidth = 112,
 		previewHeight = 73,
 		previewSrc = 'pages/preview.png',
@@ -329,17 +292,12 @@ function setPreview(view) {
 }
 
 // Width of the flipbook when zoomed in
-
 function largeMagazineWidth() {
-
 	return 2214;
-
 }
 
 // decode URL Parameters
-
 function decodeParams(data) {
-
 	var parts = data.split('&'), d, obj = {};
 
 	for (var i = 0; i < parts.length; i++) {
@@ -351,25 +309,18 @@ function decodeParams(data) {
 }
 
 // Calculate the width and height of a square within another square
-
 function calculateBound(d) {
-
 	var bound = { width: d.width, height: d.height };
 
 	if (bound.width > d.boundWidth || bound.height > d.boundHeight) {
-
 		var rel = bound.width / bound.height;
 
 		if (d.boundWidth / rel > d.boundHeight && d.boundHeight * rel <= d.boundWidth) {
-
 			bound.width = Math.round(d.boundHeight * rel);
 			bound.height = d.boundHeight;
-
 		} else {
-
 			bound.width = d.boundWidth;
 			bound.height = Math.round(d.boundWidth / rel);
-
 		}
 	}
 
