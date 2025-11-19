@@ -16,8 +16,8 @@ Confira o resultado final da revista virtual do jubileu de ouro do **Tiro de Gue
 - **[04-05]:** Histórico do instrutor
 - **[06]:** Palavras do chefe de instrução
 - **[07]:** Palavras do diretor do TG ❓
-- **[08-09]:** Atiradores que seguiram carreira militar 🔎
-- **[10]:** Milton leão 🔎
+- **[08-09]:** Atiradores que seguiram carreira militar 
+- **[10]:** Milton leão 
 - **[11]:** **Capa:** Atividades do ano de instrução
 - **[12-13]:** Estatua
 - **[14-15]:** Corrida 50 anos
